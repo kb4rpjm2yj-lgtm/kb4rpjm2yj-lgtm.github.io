@@ -1,0 +1,151 @@
+# Konfigurace administrace (Sveltia CMS).
+# Redaktor otevře /admin, přihlásí se a pracuje s formuláři — žádný Markdown.
+#
+# POZOR: `repo` se doplní při nasazení (F7). Do té doby je to ukázka.
+
+backend:
+  name: github
+  repo: jakubdigital/institutcl-web
+  branch: main
+
+publish_mode: editorial_workflow
+
+media_folder: site/static/media
+public_folder: /media
+
+collections:
+  - name: clanky
+    label: Články
+    label_singular: Článek
+    folder: site/content/blog
+    path: "{{year}}/{{month}}/{{day}}/{{slug}}"
+    create: true
+    slug: "{{slug}}"
+    preview_path: "blog/{{year}}/{{month}}/{{day}}/{{slug}}/"
+    summary: "{{title}} — {{date}}"
+    sortable_fields: [date, title]
+    fields:
+      - { name: title, label: Nadpis, widget: string }
+      - { name: typ, label: Typ textu, widget: select, required: false, options: ["Komentář", "Studie", "Rozhovor", "Převzatý text", "Záznam akce", "Video"] }
+      - { name: date, label: Datum, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
+      - { name: author, label: Autor, widget: string, required: false }
+      - name: categories
+        label: Kategorie
+        widget: select
+        options:
+          - { label: Zahraniční inspirace, value: zahranicni-inspirace }
+          - { label: Komentáře, value: komentare }
+          - { label: Videa, value: youtube }
+          - { label: Kultura, value: kultura }
+          - { label: Naše akce, value: nase-akce }
+          - { label: Články, value: clanky }
+          - { label: Publikace, value: publikace }
+          - { label: COVID-19, value: covid-19 }
+          - { label: Rozhovory, value: rozhovory }
+          - { label: Aktuality, value: aktuality }
+          - { label: 100 let KSČ, value: 100_let_ksc }
+          - { label: Naše účast, value: nase-ucast }
+          - { label: English, value: english }
+          - { label: Studie, value: studie }
+          - { label: Historie, value: historie }
+          - { label: Přednášky, value: prednasky }
+        multiple: false
+      - { name: tags, label: Tagy, widget: list, required: false, hint: "Max 8, malými písmeny" }
+      - { name: lang, label: Jazyk, widget: select, options: [cs, en, de, ru], default: cs }
+      - { name: perex, label: Perex, widget: text, hint: "1–2 věty do výpisu a pro vyhledávače" }
+      - { name: image, label: Hlavní obrázek, widget: image, required: false, hint: "Poměr 3:2" }
+      - { name: body, label: Text, widget: markdown }
+      - { name: featured, label: Na titulní stranu, widget: boolean, default: false, required: false }
+
+  - name: akce
+    label: Akce
+    label_singular: Akce
+    folder: site/content/akce
+    create: true
+    slug: "{{slug}}"
+    filter: { field: title, pattern: "^(?!Akce$).*" }
+    summary: "{{title}} — {{start}}"
+    sortable_fields: [start, title]
+    fields:
+      - { name: title, label: Název akce, widget: string }
+      - { name: start, label: Začátek, widget: datetime, date_format: "YYYY-MM-DD", time_format: "HH:mm", picker_utc: false }
+      - { name: end, label: Konec (nepovinné), widget: datetime, required: false, date_format: "YYYY-MM-DD", time_format: "HH:mm" }
+      - { name: date, label: Datum pro řazení, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, hint: "Stejné jako začátek" }
+      - { name: place, label: Místo, widget: string }
+      - { name: speaker, label: Řečníci, widget: list, required: false }
+      - { name: perex, label: Perex, widget: text }
+      - { name: image, label: Obrázek, widget: image, required: false }
+      - { name: registration, label: Odkaz na registraci, widget: string, required: false, hint: "mailto: nebo odkaz na formulář" }
+      - { name: capacity, label: Kapacita, widget: number, required: false, value_type: int }
+      - { name: body, label: Popis, widget: markdown }
+
+  - name: publikace
+    label: Publikace
+    label_singular: Publikace
+    folder: site/content/digital_library
+    create: true
+    slug: "{{slug}}"
+    filter: { field: title, pattern: "^(?!Elektronické publikace$).*" }
+    summary: "{{title}} ({{year}})"
+    fields:
+      - { name: title, label: Název, widget: string }
+      - { name: year, label: Rok, widget: number, value_type: int, min: 1800, max: 2100 }
+      - { name: series, label: Série, widget: string, required: false }
+      - { name: authors, label: Autoři, widget: list, required: false }
+      - { name: pages, label: Počet stran, widget: number, required: false, value_type: int }
+      - { name: isbn, label: ISBN, widget: string, required: false }
+      - { name: vydavatel, label: Vydavatel, widget: string, required: false }
+      - { name: rok_puvodniho_vydani, label: Rok původního vydání, widget: number, required: false, value_type: int }
+      - { name: editor, label: Editor, widget: string, required: false }
+      - { name: jazyk, label: Jazyk originálu, widget: select, options: [cs, en, ru, de, sk], required: false }
+      - { name: tema, label: Téma, widget: select, options: [Politika, Ekonomie, Historie, Filozofie, Kultura, "Mezinárodní vztahy", Právo, Média, Sociologie, Vzdělávání, Ekologie, Migrace], required: false }
+      - { name: anotace, label: Anotace (pro vyhledávače), widget: text, required: false }
+      - { name: topics, label: Témata, widget: list, required: false }
+      - { name: cover, label: Obálka, widget: image, required: false }
+      - { name: pdf, label: PDF soubor, widget: file, hint: "Nahraje se do /pdf/" }
+      - { name: date, label: Datum zveřejnění, widget: datetime, date_format: "YYYY-MM-DD", time_format: false }
+      - { name: perex, label: Anotace, widget: text }
+      - { name: body, label: Popis, widget: markdown, required: false }
+
+  - name: videa
+    label: Videa
+    label_singular: Video
+    folder: site/content/videa
+    create: true
+    slug: "{{slug}}"
+    filter: { field: title, pattern: "^(?!Videa$).*" }
+    summary: "{{title}} — {{published}}"
+    sortable_fields: [published, title]
+    fields:
+      - { name: title, label: Název, widget: string }
+      - { name: youtube_id, label: YouTube ID, widget: string, hint: "11 znaků z adresy watch?v=" }
+      - { name: published, label: Datum zveřejnění, widget: datetime, date_format: "YYYY-MM-DD", time_format: false }
+      - { name: date, label: Datum pro řazení, widget: datetime, date_format: "YYYY-MM-DD", time_format: false }
+      - { name: channel, label: Kanál, widget: string, required: false }
+      - { name: topics, label: Témata, widget: list, required: false }
+      - { name: perex, label: Popis, widget: text }
+      - { name: body, label: Poznámky, widget: markdown, required: false }
+
+  - name: stranky
+    label: Stránky
+    label_singular: Stránka
+    folder: site/content
+    extension: md
+    create: true
+    filter: { field: title, pattern: "^(?!Články$).*" }
+    fields:
+      - { name: title, label: Nadpis, widget: string }
+      - { name: url, label: URL, widget: string, required: false, hint: "Např. /library/" }
+      - { name: description, label: Popis, widget: text, required: false }
+      - { name: body, label: Obsah, widget: markdown }
+
+  - name: osoby
+    label: Lidé
+    label_singular: Osoba
+    folder: site/content/lide
+    create: true
+    fields:
+      - { name: title, label: Jméno, widget: string }
+      - { name: role, label: Role, widget: string, required: false }
+      - { name: photo, label: Fotografie, widget: image, required: false }
+      - { name: body, label: Medailon, widget: markdown, required: false }

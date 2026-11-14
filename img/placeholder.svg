@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480" role="img" aria-label="Institut české levice">
+  <rect width="720" height="480" fill="#8a1538"/>
+  <rect x="36" y="36" width="648" height="408" fill="none" stroke="#c8a24a" stroke-width="2" opacity="0.5"/>
+  <text x="360" y="238" text-anchor="middle" font-family="Georgia, serif" font-size="96" fill="#f7f3ec" letter-spacing="6">IČL</text>
+  <text x="360" y="292" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#f7f3ec" opacity="0.8" letter-spacing="4">INSTITUT ČESKÉ LEVICE</text>
+</svg>

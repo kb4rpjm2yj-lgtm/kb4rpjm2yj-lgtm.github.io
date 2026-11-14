@@ -1,0 +1,7 @@
+# Cloudflare Pages — pravidla přesměrování.
+# Tagy starého webu nešly spolehlivě vytěžit (data z výpisů byla nekonzistentní),
+# proto je posíláme na archiv. Kurátorovaná témata doplníme redakčně.
+/tags/*  /blog/  301
+
+# Kanonická verze s www (řeší i Cloudflare, pro jistotu i zde).
+https://institutcl.cz/*  https://www.institutcl.cz/:splat  301
